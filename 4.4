@@ -1,0 +1,87 @@
+// employeeManager.js
+const readline = require("readline");
+
+// Create readline interface
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+let employees = [];
+
+// Function to show menu
+function showMenu() {
+  console.log(`
+========= Employee Management =========
+1. View Employees
+2. Add Employee
+3. Remove Employee
+4. Exit
+`);
+  rl.question("Choose an option: ", handleMenu);
+}
+
+// Handle menu choices
+function handleMenu(choice) {
+  switch (choice.trim()) {
+    case "1":
+      viewEmployees();
+      break;
+    case "2":
+      addEmployee();
+      break;
+    case "3":
+      removeEmployee();
+      break;
+    case "4":
+      console.log("Exiting... Goodbye!");
+      rl.close();
+      break;
+    default:
+      console.log("❌ Invalid choice. Try again.");
+      showMenu();
+  }
+}
+
+// View all employees
+function viewEmployees() {
+  if (employees.length === 0) {
+    console.log("No employees found.");
+  } else {
+    console.log("\n--- Employee List ---");
+    employees.forEach((emp, index) => {
+      console.log(`${index + 1}. ${emp}`);
+    });
+  }
+  showMenu();
+}
+
+// Add a new employee
+function addEmployee() {
+  rl.question("Enter employee name: ", (name) => {
+    if (name.trim() === "") {
+      console.log("❌ Name cannot be empty.");
+    } else {
+      employees.push(name.trim());
+      console.log(`✅ Employee "${name}" added.`);
+    }
+    showMenu();
+  });
+}
+
+// Remove an employee
+function removeEmployee() {
+  rl.question("Enter employee name to remove: ", (name) => {
+    const index = employees.indexOf(name.trim());
+    if (index === -1) {
+      console.log(`❌ Employee "${name}" not found.`);
+    } else {
+      employees.splice(index, 1);
+      console.log(`🗑️ Employee "${name}" removed.`);
+    }
+    showMenu();
+  });
+}
+
+// Start program
+showMenu();
